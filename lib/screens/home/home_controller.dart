@@ -10,9 +10,13 @@ class HomeController extends GetxController {
   }
 
   RxList<Todo> _todos = RxList<Todo>([]);
+  RxInt _currentIndex = 0.obs;
 
   List<Todo> get todos => this._todos;
   set todos(List<Todo> value) => this._todos.value = [...value];
+
+  int get currentIndex => this._currentIndex.value;
+  set currentIndex(int value) => this._currentIndex.value = value;
 
   Future<void> setTodo() async {
     final _todos = await MockTodo.getTodo();
