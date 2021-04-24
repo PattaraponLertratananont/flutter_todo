@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -30,12 +31,65 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(32),
                 ),
-                child: Text("Todo"),
+                child: Column(
+                  children: [
+                    titleBar(),
+                    Container(
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: 2,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: Icon(Icons.check_circle_outline_rounded),
+                            title: Text(
+                              "อ่านหนังสือก่อนนอน",
+                            ),
+                            subtitle: Text(
+                              "เล่ม นอนอย่างมีประสิทธิภาพ",
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.more_vert),
+                              onPressed: () {},
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget titleBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Todo",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        TextButton(
+          child: Text(
+            "save",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              decoration: TextDecoration.underline,
+            ),
+          ),
+          onPressed: () {},
+        ),
+      ],
     );
   }
 }
