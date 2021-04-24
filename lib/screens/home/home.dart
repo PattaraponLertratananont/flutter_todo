@@ -1,30 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo/models/todo_model.dart';
 import 'package:todo/screens/home/home_controller.dart';
 import 'package:todo/screens/new_todo.dart';
-import 'package:todo/service/mock_todo.dart';
 import 'package:todo/widgets/title_bar.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late HomeController _homeController;
-
-  @override
-  void initState() {
-    super.initState();
-    _homeController = Get.put(HomeController());
-    _homeController.setTodo();
-  }
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    HomeController _homeController = Get.put(HomeController());
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -95,16 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ];
                                 },
-                                onSelected: (value) async {
+                                onSelected: (value) {
                                   if (value == "delete") {
-                                    await MockTodo.deleteTodo(index);
-                                    await _homeController.setTodo();
+                                    _homeController.deleteTodo(index);
                                   }
                                 },
                               ),
-                              onTap: () async {
-                                await MockTodo.completeTodo(index);
-                                await _homeController.setTodo();
+                              onTap: () {
+                                _homeController.completeTodo(index);
                               },
                             );
                           },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/screens/home/home.dart';
+import 'package:todo/screens/home/home_controller.dart';
 
 void main() {
   runApp(MyApp());
