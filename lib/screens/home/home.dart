@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo/screens/home/home_controller.dart';
-import 'package:todo/screens/new_todo.dart';
 import 'package:todo/widgets/title_bar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    HomeController _homeController = Get.put(HomeController());
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: Get.height,
         child: Stack(
           children: [
             Image.asset(
               "assets/images/cover.png",
               fit: BoxFit.cover,
-              width: MediaQuery.of(context).size.width,
+              width: Get.width,
             ),
             Positioned(
               bottom: 0,
               child: Container(
-                height: MediaQuery.of(context).size.height / 1.7,
-                width: MediaQuery.of(context).size.width,
+                height: Get.height / 1.7,
+                width: Get.width,
                 padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -33,27 +31,20 @@ class HomeScreen extends StatelessWidget {
                     titleBar(
                       actionName: "new",
                       action: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => NewTodoScreen(
-                              beforePop: () {
-                                _homeController.setTodo();
-                              },
-                            ),
-                          ),
-                        );
+                        Get.toNamed("/new_todo")
+                            ?.whenComplete(() => controller.setTodo());
                       },
                     ),
                     Obx(
                       () => Container(
                         child: ListView.builder(
                           padding: EdgeInsets.zero,
-                          itemCount: _homeController.todos.length,
+                          itemCount: controller.todos.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
                             return ListTile(
                               contentPadding: EdgeInsets.zero,
-                              leading: _homeController.todos[index].complete
+                              leading: controller.todos[index].complete
                                   ? Icon(
                                       Icons.check_circle_outline_rounded,
                                       color: Colors.green,
@@ -63,10 +54,10 @@ class HomeScreen extends StatelessWidget {
                                       color: Colors.yellow,
                                     ),
                               title: Text(
-                                _homeController.todos[index].topic,
+                                controller.todos[index].topic,
                               ),
                               subtitle: Text(
-                                _homeController.todos[index].msg,
+                                controller.todos[index].msg,
                               ),
                               trailing: PopupMenuButton(
                                 icon: Icon(Icons.more_vert),
@@ -80,12 +71,12 @@ class HomeScreen extends StatelessWidget {
                                 },
                                 onSelected: (value) {
                                   if (value == "delete") {
-                                    _homeController.deleteTodo(index);
+                                    controller.deleteTodo(index);
                                   }
                                 },
                               ),
                               onTap: () {
-                                _homeController.completeTodo(index);
+                                controller.completeTodo(index);
                               },
                             );
                           },
