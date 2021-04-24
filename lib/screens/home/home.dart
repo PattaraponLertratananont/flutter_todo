@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:todo/models/todo_model.dart';
+import 'package:todo/screens/home/home_controller.dart';
 import 'package:todo/screens/new_todo.dart';
 import 'package:todo/service/mock_todo.dart';
 import 'package:todo/widgets/title_bar.dart';
@@ -12,19 +14,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Todo> todos = [];
+  late HomeController _homeController;
 
   @override
   void initState() {
     super.initState();
-    setTodo();
-  }
-
-  Future<void> setTodo() async {
-    final _todos = await MockTodo.getTodo();
-    setState(() {
-      todos = _todos;
-    });
+    _homeController = Get.put(HomeController());
+    _homeController.setTodo();
   }
 
   @override
@@ -58,61 +54,63 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                             builder: (context) => NewTodoScreen(
                               beforePop: () {
-                                setTodo();
+                                _homeController.setTodo();
                               },
                             ),
                           ),
                         );
                       },
                     ),
-                    Container(
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: todos.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: todos[index].complete
-                                ? Icon(
-                                    Icons.check_circle_outline_rounded,
-                                    color: Colors.green,
-                                  )
-                                : Icon(
-                                    Icons.panorama_fish_eye,
-                                    color: Colors.yellow,
-                                  ),
-                            title: Text(
-                              todos[index].topic,
-                            ),
-                            subtitle: Text(
-                              todos[index].msg,
-                            ),
-                            trailing: PopupMenuButton(
-                              icon: Icon(Icons.more_vert),
-                              itemBuilder: (context) {
-                                return [
-                                  PopupMenuItem(
-                                    value: "delete",
-                                    child: Text("Delete"),
-                                  ),
-                                ];
+                    Obx(
+                      () => Container(
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: _homeController.todos.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: _homeController.todos[index].complete
+                                  ? Icon(
+                                      Icons.check_circle_outline_rounded,
+                                      color: Colors.green,
+                                    )
+                                  : Icon(
+                                      Icons.panorama_fish_eye,
+                                      color: Colors.yellow,
+                                    ),
+                              title: Text(
+                                _homeController.todos[index].topic,
+                              ),
+                              subtitle: Text(
+                                _homeController.todos[index].msg,
+                              ),
+                              trailing: PopupMenuButton(
+                                icon: Icon(Icons.more_vert),
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      value: "delete",
+                                      child: Text("Delete"),
+                                    ),
+                                  ];
+                                },
+                                onSelected: (value) async {
+                                  if (value == "delete") {
+                                    await MockTodo.deleteTodo(index);
+                                    await _homeController.setTodo();
+                                  }
+                                },
+                              ),
+                              onTap: () async {
+                                await MockTodo.completeTodo(index);
+                                await _homeController.setTodo();
                               },
-                              onSelected: (value) async {
-                                if (value == "delete") {
-                                  await MockTodo.deleteTodo(index);
-                                  await setTodo();
-                                }
-                              },
-                            ),
-                            onTap: () async {
-                              await MockTodo.completeTodo(index);
-                              await setTodo();
-                            },
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
