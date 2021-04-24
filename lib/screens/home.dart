@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:todo/screens/new_todo.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -80,14 +81,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         TextButton(
           child: Text(
-            "save",
+            "new",
             style: TextStyle(
               color: Colors.black,
               fontSize: 16,
               decoration: TextDecoration.underline,
             ),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NewTodoScreen(),
+              ),
+            );
+          },
         ),
       ],
     );
