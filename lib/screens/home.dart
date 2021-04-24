@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setTodo();
   }
 
-  setTodo() async {
+  Future<void> setTodo() async {
     final _todos = await MockTodo.getTodo();
     setState(() {
       todos = _todos;
@@ -56,7 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       action: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => NewTodoScreen(),
+                            builder: (context) => NewTodoScreen(
+                              beforePop: () {
+                                setTodo();
+                              },
+                            ),
                           ),
                         );
                       },
