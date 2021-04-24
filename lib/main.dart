@@ -17,7 +17,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: GoogleFonts.kanit().fontFamily,
       ),
-      home: HomeScreen(),
+      initialRoute: "/home",
+      getPages: [
+        GetPage(
+            name: "/home",
+            page: () => HomeScreen(),
+            binding: BindingsBuilder(() {
+              Get.put(HomeController());
+            })),
+        GetPage(name: "/new_todo", page: () => NewTodoScreen())
+      ],
     );
   }
 }
