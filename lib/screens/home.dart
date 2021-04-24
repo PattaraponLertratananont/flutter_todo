@@ -84,9 +84,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             subtitle: Text(
                               todos[index].msg,
                             ),
-                            trailing: IconButton(
+                            trailing: PopupMenuButton(
                               icon: Icon(Icons.more_vert),
-                              onPressed: () {},
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    value: "delete",
+                                    child: Text("Delete"),
+                                  ),
+                                ];
+                              },
+                              onSelected: (value) async {
+                                if (value == "delete") {
+                                  await MockTodo.deleteTodo(index);
+                                  await setTodo();
+                                }
+                              },
                             ),
                             onTap: () async {
                               await MockTodo.completeTodo(index);
