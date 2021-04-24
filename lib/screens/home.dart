@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/screens/new_todo.dart';
+import 'package:todo/widgets/title_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -34,7 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Column(
                   children: [
-                    titleBar(),
+                    titleBar(
+                      actionName: "new",
+                      action: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => NewTodoScreen(),
+                          ),
+                        );
+                      },
+                    ),
                     Container(
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
@@ -65,38 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget titleBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          "Todo",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        TextButton(
-          child: Text(
-            "new",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              decoration: TextDecoration.underline,
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => NewTodoScreen(),
-              ),
-            );
-          },
-        ),
-      ],
     );
   }
 }
