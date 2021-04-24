@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo/screens/home/home.dart';
 import 'package:todo/screens/home/home_controller.dart';
+import 'package:todo/screens/new_todo.dart';
 
 void main() {
   runApp(MyApp());
