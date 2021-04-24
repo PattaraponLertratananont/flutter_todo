@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo/models/todo_model.dart';
 import 'package:todo/screens/new_todo.dart';
+import 'package:todo/service/mock_todo.dart';
 import 'package:todo/widgets/title_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +12,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Todo> todos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    setTodo();
+  }
+
+  setTodo() async {
+    final _todos = await MockTodo.getTodo();
+    setState(() {
+      todos = _todos;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,17 +64,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: 2,
+                        itemCount: todos.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return ListTile(
                             contentPadding: EdgeInsets.zero,
-                            leading: Icon(Icons.check_circle_outline_rounded),
+                            leading: todos[index].complete
+                                ? Icon(
+                                    Icons.check_circle_outline_rounded,
+                                    color: Colors.green,
+                                  )
+                                : Icon(
+                                    Icons.panorama_fish_eye,
+                                    color: Colors.yellow,
+                                  ),
                             title: Text(
-                              "อ่านหนังสือก่อนนอน",
+                              todos[index].topic,
                             ),
                             subtitle: Text(
-                              "เล่ม นอนอย่างมีประสิทธิภาพ",
+                              todos[index].msg,
                             ),
                             trailing: IconButton(
                               icon: Icon(Icons.more_vert),
